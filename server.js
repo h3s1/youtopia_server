@@ -6,6 +6,10 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
 const indexRouter = require('./routes/index');
+const postRouter = require('./routes/posts');
+const commentRouter = require('./routes/comments');
+const recommendationRouter = require('./routes/recommendations');
+const userRouter = require('./routes/users');
 
 const env = process.env.NODE_ENV || 'development';
 
@@ -39,6 +43,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/posts/', postRouter);
+app.use('/posts/:postId/comments/', commentRouter);
+app.use('/posts/:postId/recommendations/', recommendationRouter);
+app.use('/users/', userRouter);
 
 app.set('port', process.env.SERVER_PORT);
 app.listen(process.env.SERVER_PORT, () =>
