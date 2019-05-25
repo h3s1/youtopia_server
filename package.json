@@ -1,0 +1,50 @@
+{
+  "name": "youtopia_server",
+  "version": "1.0.0",
+  "description": "Youtopia community server",
+  "main": "server.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=development node ./server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eunjin-hong/youtopia_server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eunjin-hong/youtopia_server/issues"
+  },
+  "lint-staged": {
+    "*.js": [
+      "pretty-quick --staged",
+      "eslint ./ --fix",
+      "git add"
+    ]
+  },
+  "ignore": [
+    "node_modules/"
+  ],
+  "homepage": "https://github.com/eunjin-hong/youtopia_server#readme",
+  "dependencies": {
+    "babel-eslint": "^10.0.1",
+    "cookie-parser": "^1.4.4",
+    "cors": "^2.8.5",
+    "debug": "^4.1.1",
+    "express": "^4.17.0",
+    "morgan": "^1.9.1"
+  },
+  "devDependencies": {
+    "body-parser": "^1.19.0",
+    "cross-env": "^5.2.0",
+    "eslint": "^5.16.0",
+    "eslint-config-prettier": "^4.3.0",
+    "eslint-plugin-import": "^2.17.3",
+    "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "husky": "^2.3.0",
+    "lint-staged": "^8.1.7",
+    "prettier": "^1.17.1",
+    "pretty-quick": "^1.11.0"
+  }
+}
