@@ -12,13 +12,14 @@ const recommendationRouter = require('./routes/recommendations');
 const userRouter = require('./routes/users');
 
 const env = process.env.NODE_ENV || 'development';
+const config = require('./server-config');
 
 const app = express();
 
 app.use(
   cors({
-    origin: process.env.SERVER_CORS_ORIGIN,
-    methods: process.env.SERVER_CORS_METHOD.split(','),
+    origin: config.SERVER_CORS_ORIGIN,
+    methods: config.SERVER_CONFIG_METHOD,
     credentials: true
   })
 );
