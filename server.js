@@ -12,13 +12,13 @@ const recommendationRouter = require('./routes/recommendations');
 const userRouter = require('./routes/users');
 
 const env = process.env.NODE_ENV || 'development';
-const config = require('./server-config');
+const { config } = require('./server-config');
 
 const app = express();
 
 app.use(
   cors({
-    origin: config.SERVER_CORS_ORIGIN,
+    origin: config.SERVER_CONFIG_ORIGIN,
     methods: config.SERVER_CONFIG_METHOD,
     credentials: true
   })
@@ -49,9 +49,9 @@ app.use('/posts/:postId/comments/', commentRouter);
 app.use('/posts/:postId/recommendations/', recommendationRouter);
 app.use('/users/', userRouter);
 
-app.set('port', process.env.SERVER_PORT);
-app.listen(process.env.SERVER_PORT, () =>
-  console.log(`Listening on port: ${process.env.SERVER_PORT}`)
+app.set('port', config.SERVER_PORT);
+app.listen(config.SERVER_PORT, () =>
+  console.log(`Listening on port: ${config.SERVER_PORT}`)
 );
 
 module.exports = app;
