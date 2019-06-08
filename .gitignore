@@ -60,3 +60,6 @@ server-config.js
 
 # next.js build output
 .next
+
+# Sequelize config file
+config.json

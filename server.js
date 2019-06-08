@@ -4,17 +4,15 @@ const cors = require('cors');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+var sequelize = require('./models/index').sequelize;
 
 const indexRouter = require('./routes/index');
-const postRouter = require('./routes/posts');
-const commentRouter = require('./routes/comments');
-const recommendationRouter = require('./routes/recommendations');
-const userRouter = require('./routes/users');
 
 const env = process.env.NODE_ENV || 'development';
 const { config } = require('./server-config');
 
 const app = express();
+sequelize.sync();
 
 app.use(
   cors({
@@ -44,10 +42,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/posts/', postRouter);
-app.use('/posts/:postId/comments/', commentRouter);
-app.use('/posts/:postId/recommendations/', recommendationRouter);
-app.use('/users/', userRouter);
 
 app.set('port', config.SERVER_PORT);
 app.listen(config.SERVER_PORT, () =>
