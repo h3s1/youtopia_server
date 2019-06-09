@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       // eslint-disable-next-line
       author_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER.UNSIGNED
       }
     },
     {

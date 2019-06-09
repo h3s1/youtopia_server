@@ -6,8 +6,9 @@ module.exports = (sequelize, DataTypes) => {
     {
       // eslint-disable-next-line
       user_id: {
-        type: Sequelize.INTEGER,
-        primaryKey: true
+        type: Sequelize.INTEGER.UNSIGNED,
+        primaryKey: true,
+        autoIncrement: true
       },
       password: {
         type: Sequelize.STRING,
