@@ -41,6 +41,21 @@ module.exports = (sequelize, DataTypes) => {
       sourceKey: 'user_id',
       onDelete: 'cascade'
     });
+    user.hasMany(models.View, {
+      foreignKey: 'author_id',
+      sourceKey: 'user_id',
+      onDelete: 'cascade'
+    });
+    user.hasMany(models.Comment, {
+      foreignKey: 'author_id',
+      sourceKey: 'user_id',
+      onDelete: 'cascade'
+    });
+    user.hasMany(models.Like, {
+      foreignKey: 'author_id',
+      sourceKey: 'user_id',
+      onDelete: 'cascade'
+    });
   };
   return user;
 };

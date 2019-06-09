@@ -1,8 +1,8 @@
 const Sequelize = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  const view = sequelize.define(
-    'View',
+  const like = sequelize.define(
+    'Like',
     {
       id: {
         type: Sequelize.INTEGER.UNSIGNED,
@@ -21,21 +21,21 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     {
-      tableName: 'view',
+      tableName: 'like',
       freezeTableName: true,
       charset: 'utf8mb4',
       collate: 'utf8mb4_general_ci'
     }
   );
-  view.associate = models => {
-    view.belongsTo(models.Article, {
+  like.associate = models => {
+    like.belongsTo(models.Article, {
       foreignKey: 'article_id',
       targetKey: 'id'
     });
-    view.belongsTo(models.User, {
+    like.belongsTo(models.User, {
       foreignKey: 'author_id',
       targetKey: 'user_id'
     });
   };
-  return view;
+  return like;
 };
