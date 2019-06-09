@@ -3,11 +3,11 @@ const router = express.Router();
 const model = require('../services/article');
 const errors = require('../utils/errors');
 
-const getArticleList = (request, response, next) => {
+const getArticleList = async (request, response, next) => {
   const category = request.query['category'];
   const lastarticleId = parseInt(request.query['last-article-id']) || undefined;
   try {
-    const articleList = model.getarticleList(category, lastarticleId);
+    const articleList = await model.getarticleList(category, lastarticleId);
     response.setHeader('Content-Type', 'application/json');
     response.send(JSON.stringify(articleList));
   } catch (error) {
@@ -17,7 +17,6 @@ const getArticleList = (request, response, next) => {
 
 const createArticle = (request, response, next) => {
   body = request.body;
-  console.log(body);
   try {
     model.createArticle({
       title: body.title,
