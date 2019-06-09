@@ -41,7 +41,17 @@ module.exports = {
         content:
           '내가 그냥 두고두고 보려고 만든 영상입니다😊\n개행문자 테스트 입니다\n\n개행문자 두개를 넣었습니다\n이모지도 넣어봅니다👀📖❓🍒✏',
         // eslint-disable-next-line
-        video_id: videoIds[num % videoIds.length]
+        video_id: videoIds[num % videoIds.length],
+        // eslint-disable-next-line
+        createdAt: new Date()
+          .toISOString()
+          .replace(/T/, ' ')
+          .replace(/\..+/, ''),
+        // eslint-disable-next-line
+        updatedAt: new Date()
+          .toISOString()
+          .replace(/T/, ' ')
+          .replace(/\..+/, '')
       };
     });
     return queryInterface.bulkInsert('articles', articleList, {

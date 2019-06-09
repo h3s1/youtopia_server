@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  return sequelize.define(
+  const article = sequelize.define(
     'Article',
     {
       id: {
@@ -33,4 +33,10 @@ module.exports = (sequelize, DataTypes) => {
       collate: 'utf8mb4_general_ci'
     }
   );
+  article.associate = models => {
+    article.belongsTo(models.User, {
+      foreignKey: 'user_id'
+    });
+  };
+  return article;
 };
