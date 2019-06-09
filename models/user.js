@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  return sequelize.define(
+  const user = sequelize.define(
     'User',
     {
       // eslint-disable-next-line
@@ -35,4 +35,12 @@ module.exports = (sequelize, DataTypes) => {
       collate: 'utf8mb4_general_ci'
     }
   );
+  user.associate = models => {
+    user.hasMany(models.Article, {
+      foreignKey: 'author_id',
+      sourceKey: 'user_id',
+      onDelete: 'cascade'
+    });
+  };
+  return user;
 };

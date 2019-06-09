@@ -35,7 +35,13 @@ module.exports = (sequelize, DataTypes) => {
   );
   article.associate = models => {
     article.belongsTo(models.User, {
-      foreignKey: 'user_id'
+      foreignKey: 'author_id',
+      targetKey: 'user_id'
+    });
+    article.hasMany(models.ArticleLinksTag, {
+      foreignKey: 'article_id',
+      sourceKey: 'id',
+      onDelete: 'cascade'
     });
   };
   return article;
