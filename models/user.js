@@ -1,13 +1,14 @@
 const Sequelize = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  return sequelize.define(
+  const user = sequelize.define(
     'User',
     {
       // eslint-disable-next-line
       user_id: {
-        type: Sequelize.STRING,
-        primaryKey: true
+        type: Sequelize.INTEGER.UNSIGNED,
+        primaryKey: true,
+        autoIncrement: true
       },
       password: {
         type: Sequelize.STRING,
@@ -35,4 +36,27 @@ module.exports = (sequelize, DataTypes) => {
       collate: 'utf8mb4_general_ci'
     }
   );
+  user.associate = models => {
+    user.hasMany(models.Article, {
+      foreignKey: 'author_id',
+      sourceKey: 'user_id',
+      onDelete: 'cascade'
+    });
+    user.hasMany(models.View, {
+      foreignKey: 'author_id',
+      sourceKey: 'user_id',
+      onDelete: 'cascade'
+    });
+    user.hasMany(models.Comment, {
+      foreignKey: 'author_id',
+      sourceKey: 'user_id',
+      onDelete: 'cascade'
+    });
+    user.hasMany(models.Like, {
+      foreignKey: 'author_id',
+      sourceKey: 'user_id',
+      onDelete: 'cascade'
+    });
+  };
+  return user;
 };

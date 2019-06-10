@@ -42,5 +42,10 @@ db.Sequelize = Sequelize;
 
 db.User = require('./user')(sequelize, Sequelize);
 db.Article = require('./article')(sequelize, Sequelize);
+db.ArticleLinksTag = require('./articleLinksTag')(sequelize, Sequelize);
+db.Tag = require('./tag')(sequelize, Sequelize);
+db.View = require('./view')(sequelize, Sequelize);
+db.Comment = require('./comment')(sequelize, Sequelize);
+db.Like = require('./like')(sequelize, Sequelize);
 
 module.exports = db;

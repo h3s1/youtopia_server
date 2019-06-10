@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  return sequelize.define(
+  const article = sequelize.define(
     'Article',
     {
       id: {
@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       // eslint-disable-next-line
       author_id: {
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER.UNSIGNED
       }
     },
     {
@@ -33,4 +33,31 @@ module.exports = (sequelize, DataTypes) => {
       collate: 'utf8mb4_general_ci'
     }
   );
+  article.associate = models => {
+    article.belongsTo(models.User, {
+      foreignKey: 'author_id',
+      targetKey: 'user_id'
+    });
+    article.hasMany(models.ArticleLinksTag, {
+      foreignKey: 'article_id',
+      sourceKey: 'id',
+      onDelete: 'cascade'
+    });
+    article.hasMany(models.View, {
+      foreignKey: 'article_id',
+      sourceKey: 'id',
+      onDelete: 'cascade'
+    });
+    article.hasMany(models.Comment, {
+      foreignKey: 'article_id',
+      sourceKey: 'id',
+      onDelete: 'cascade'
+    });
+    article.hasMany(models.View, {
+      foreignKey: 'article_id',
+      sourceKey: 'id',
+      onDelete: 'cascade'
+    });
+  };
+  return article;
 };
