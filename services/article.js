@@ -40,3 +40,29 @@ exports.createArticle = async article => {
     author_id: article.userId
   });
 };
+
+exports.getArticle = async articleId => {
+  Article.findOne({
+    where: {
+      id: articleId
+    }
+  });
+};
+
+exports.updateArticle = async article => {
+  Article.update(
+    {
+      title: article.title,
+      content: article.content,
+      // eslint-disable-next-line
+      video_id: article.video_id,
+      // eslint-disable-next-line
+      author_id: article.userId
+    },
+    { where: { id: article.id } }
+  );
+};
+
+exports.deleteArticle = async articleId => {
+  Article.destroy({ where: { id: articleId } });
+};

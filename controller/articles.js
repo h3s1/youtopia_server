@@ -30,19 +30,38 @@ const createArticle = (request, response, next) => {
   response.send('article Uploaded');
 };
 
-const getArticle = (request, response, next) => {
+const getArticle = async (request, response, next) => {
   const articleId = request.params.articleId;
-  response.send(`get a article ${articleId}`);
+  try {
+    const article = await model.getArticle(articleId);
+    response.json(article);
+  } catch (err) {
+    response.send(err);
+  }
 };
 
 const updateArticle = (request, response, next) => {
-  const articleId = request.params.articleId;
-  response.send(`update a article ${articleId}`);
+  body = request.body;
+  try {
+    model.updateArticle({
+      id: body.id,
+      content: body.content,
+      videoId: body.video_id,
+      userId: body.user_id
+    });
+  } catch (err) {
+    response.send(err);
+  }
 };
 
-const removeArticle = (request, response, next) => {
+const removeArticle = async (request, response, next) => {
   const articleId = request.params.articleId;
-  response.send(`remove a article ${articleId}`);
+  try {
+    await model.deleteArticle(articleId);
+    response.send(`remove a article ${articleId}`);
+  } catch (err) {
+    response.send(err);
+  }
 };
 
 router.get('/', getArticleList);
