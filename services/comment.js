@@ -2,7 +2,7 @@ const { Comment } = require('../models');
 
 exports.createComment = async comment => {
   try {
-    Comment.create({
+    await Comment.create({
       content: comment.content,
       // eslint-disable-next-line
       article_id: comment.articleId,

@@ -1,23 +1,38 @@
 const express = require('express');
 const router = express.Router();
-const model = require('../services/comment');
+const CommentService = require('../services/comment');
+const UserService = require('../services/user');
+const auth = require('../utils/auth');
 
 const getCommentList = (request, response, next) => {
   response.send('get a list of comments');
 };
 
-const createComment = (request, response, next) => {
-  const articleId = parseInt(request.params.articleId);
-  body = request.body;
-  try {
-    model.createComment({
-      content: body.content,
-      articleId: articleId,
-      userId: body.user_id
-    });
-    response.send('comment Uploaded');
-  } catch (error) {
-    response.send(error.message);
+const createComment = async (request, response, next) => {
+  if (!request.headers.authorization) {
+    return response.status(403).json({ error: 'No credentials sent!' });
+  }
+
+  const token = request.headers.authorization.split(' ')[1];
+
+  const body = request.body;
+
+  if (typeof token !== 'undefined') {
+    try {
+      const decoded = auth.verify(token);
+
+      const user = await UserService.findUserById(decoded.userId);
+      await CommentService.createComment({
+        content: body.content,
+        articleId: request.articleId,
+        userId: user.user_id
+      });
+      response.send('comment Uploaded');
+    } catch (error) {
+      response.status(400).send(error.message);
+    }
+  } else {
+    res.status(403).send(error.message);
   }
 };
 
