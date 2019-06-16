@@ -26,3 +26,11 @@ exports.updateComment = async comment => {
     throw error;
   }
 };
+
+exports.removeComment = async id => {
+  try {
+    await Comment.destroy({ where: { id: id }, returning: true });
+  } catch (error) {
+    throw error;
+  }
+};

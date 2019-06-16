@@ -51,6 +51,10 @@ const updateComment = async (request, response, next) => {
       const decoded = auth.verify(token);
       await UserService.findUserById(decoded.userId);
 
+      if (request.body.user_id !== decoded.userId) {
+        throw new Error('User id does not match');
+      }
+
       await CommentService.updateComment({
         content: body.content,
         id: commentId
@@ -64,9 +68,32 @@ const updateComment = async (request, response, next) => {
   }
 };
 
-const removeComment = (request, response, next) => {
-  const commentId = request.params.commentId;
-  response.send(`remove a comment ${commentId}`);
+const removeComment = async (request, response, next) => {
+  if (!request.headers.authorization) {
+    return response.status(403).json({ error: 'No credentials sent!' });
+  }
+
+  const token = request.headers.authorization.split(' ')[1];
+
+  const body = request.body;
+  const commentId = parseInt(request.params.commentId);
+
+  if (typeof token !== 'undefined') {
+    try {
+      const decoded = auth.verify(token);
+      await UserService.findUserById(decoded.userId);
+      if (request.body.user_id !== decoded.userId) {
+        throw new Error('User id does not match');
+      }
+
+      await CommentService.removeComment(commentId);
+      response.send('comment deleted!');
+    } catch (error) {
+      response.status(400).send(error.message);
+    }
+  } else {
+    res.status(403).send(error.message);
+  }
 };
 
 router.get('/', getCommentList);
