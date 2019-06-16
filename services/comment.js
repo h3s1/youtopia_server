@@ -13,3 +13,16 @@ exports.createComment = async comment => {
     throw error;
   }
 };
+
+exports.updateComment = async comment => {
+  try {
+    await Comment.update(
+      {
+        content: comment.content
+      },
+      { where: { id: comment.id }, returning: true }
+    );
+  } catch (error) {
+    throw error;
+  }
+};
