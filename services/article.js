@@ -1,5 +1,5 @@
-const Op = require('sequelize').Op;
-const { Article } = require('../models');
+const { Op, fn, col } = require('sequelize');
+const { Article, Like, View } = require('../models');
 
 exports.getarticleList = async (category, lastarticleId) => {
   if (category === 'new') {
@@ -39,4 +39,48 @@ exports.createArticle = async article => {
     // eslint-disable-next-line
     author_id: article.userId
   });
+};
+
+exports.getArticle = async articleId => {
+  let article = await Article.findOne({
+    where: {
+      id: articleId
+    }
+  });
+  let likeCnt = await Like.count({
+    where: {
+      // eslint-disable-next-line
+      article_id: articleId
+    }
+  });
+  let viewCnt = await View.count({
+    where: {
+      // eslint-disable-next-line
+      article_id: articleId
+    }
+  });
+
+  console.log(likeCnt);
+  console.log(viewCnt);
+  console.log(article);
+
+  return { ...article.dataValues, likes: likeCnt, views: viewCnt };
+};
+
+exports.updateArticle = async article => {
+  Article.update(
+    {
+      title: article.title,
+      content: article.content,
+      // eslint-disable-next-line
+      video_id: article.video_id,
+      // eslint-disable-next-line
+      author_id: article.userId
+    },
+    { where: { id: article.id } }
+  );
+};
+
+exports.deleteArticle = async articleId => {
+  Article.destroy({ where: { id: articleId } });
 };
