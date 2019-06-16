@@ -15,3 +15,14 @@ exports.makeUser = async userInfo => {
     throw error;
   }
 };
+
+exports.findUserById = userId => {
+  try {
+    return User.findOne({
+      // eslint-disable-next-line
+      where: { user_id: userId }
+    });
+  } catch (error) {
+    throw error;
+  }
+};
