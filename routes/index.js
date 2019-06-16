@@ -11,6 +11,7 @@ router.get('/', (req, res, next) => {
 });
 
 router.use('/articles/', articleRouter);
+router.use('/articles/:articleId/', articleRouter);
 router.use('/articles/:articleId/comments/', commentRouter);
 router.use('/articles/:articleId/recommendations/', recommendationRouter);
 router.use('/users/', userRouter);
