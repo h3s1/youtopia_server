@@ -20,7 +20,8 @@ exports.findUserById = userId => {
   try {
     return User.findOne({
       // eslint-disable-next-line
-      where: { user_id: userId }
+      where: { user_id: userId },
+      returning: true
     });
   } catch (error) {
     throw error;
