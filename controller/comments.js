@@ -51,10 +51,6 @@ const updateComment = async (request, response, next) => {
       const decoded = auth.verify(token);
       await UserService.findUserById(decoded.userId);
 
-      if (request.body.user_id !== decoded.userId) {
-        throw new Error('User id does not match');
-      }
-
       await CommentService.updateComment({
         content: body.content,
         id: commentId
@@ -82,9 +78,6 @@ const removeComment = async (request, response, next) => {
     try {
       const decoded = auth.verify(token);
       await UserService.findUserById(decoded.userId);
-      if (request.body.user_id !== decoded.userId) {
-        throw new Error('User id does not match');
-      }
 
       await CommentService.removeComment(commentId);
       response.send('comment deleted!');
