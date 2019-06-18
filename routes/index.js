@@ -3,6 +3,7 @@ const router = express.Router();
 const articleRouter = require('../controller/articles');
 const commentRouter = require('../controller/comments');
 const recommendationRouter = require('../controller/recommendations');
+const likeRouter = require('../controller/likes');
 const userRouter = require('../controller/users');
 
 router.get('/', (req, res, next) => {
@@ -17,6 +18,7 @@ router.use('/articles/:articleId/', (request, response, next) => {
 });
 router.use('/articles/:articleId/comments/', commentRouter);
 router.use('/articles/:articleId/recommendations/', recommendationRouter);
+router.use('/articles/:articleId/likes/', likeRouter);
 router.use('/users/', userRouter);
 
 module.exports = router;

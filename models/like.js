@@ -24,7 +24,13 @@ module.exports = (sequelize, DataTypes) => {
       tableName: 'like',
       freezeTableName: true,
       charset: 'utf8mb4',
-      collate: 'utf8mb4_general_ci'
+      collate: 'utf8mb4_general_ci',
+      indexes: [
+        {
+          unique: true,
+          fields: ['article_id', 'author_id']
+        }
+      ]
     }
   );
   like.associate = models => {
