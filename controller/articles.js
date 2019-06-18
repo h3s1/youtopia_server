@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const model = require('../services/article');
+const auth = require('../utils/auth');
+const UserService = require('../services/user');
 const errors = require('../utils/errors');
 
 const getArticleList = async (request, response, next) => {
@@ -31,12 +33,26 @@ const createArticle = (request, response, next) => {
 };
 
 const getArticle = async (request, response, next) => {
-  const articleId = request.params.articleId;
-  try {
-    const article = await model.getArticle(articleId);
-    response.json(article);
-  } catch (err) {
-    response.send(err);
+  if (!request.headers.authorization) {
+    return response.status(403).json({ error: 'No credentials sent!' });
+  }
+
+  const token = request.headers.authorization.split(' ')[1];
+
+  const articleId = parseInt(request.params.articleId);
+
+  if (typeof token !== 'undefined') {
+    try {
+      const decoded = auth.verify(token);
+      const user = await UserService.findUserById(decoded.userId);
+
+      const article = await model.getArticle(articleId, user.user_id);
+      response.json(article);
+    } catch (error) {
+      response.status(400).send(error.message);
+    }
+  } else {
+    res.status(403).send(error.message);
   }
 };
 

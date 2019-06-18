@@ -41,28 +41,30 @@ exports.createArticle = async article => {
   });
 };
 
-exports.getArticle = async articleId => {
-  let article = await Article.findOne({
+exports.getArticle = async (articleId, userId) => {
+  const article = await Article.findOne({
     where: {
       id: articleId
     }
   });
-  let likeCnt = await Like.count({
+  const likeCnt = await Like.count({
     where: {
       // eslint-disable-next-line
       article_id: articleId
     }
   });
-  let viewCnt = await View.count({
+  await View.create({
+    // eslint-disable-next-line
+    author_id: userId,
+    // eslint-disable-next-line
+    article_id: userId
+  });
+  const viewCnt = await View.count({
     where: {
       // eslint-disable-next-line
       article_id: articleId
     }
   });
-
-  console.log(likeCnt);
-  console.log(viewCnt);
-  console.log(article);
 
   return { ...article.dataValues, likes: likeCnt, views: viewCnt };
 };
