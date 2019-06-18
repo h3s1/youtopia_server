@@ -56,27 +56,58 @@ const getArticle = async (request, response, next) => {
   }
 };
 
-const updateArticle = (request, response, next) => {
+const updateArticle = async (request, response, next) => {
+  if (!request.headers.authorization) {
+    return response.status(403).json({ error: 'No credentials sent!' });
+  }
+
+  const token = request.headers.authorization.split(' ')[1];
+
   body = request.body;
-  try {
-    model.updateArticle({
-      id: body.id,
-      content: body.content,
-      videoId: body.video_id,
-      userId: body.user_id
-    });
-  } catch (err) {
-    response.send(err);
+  const articleId = parseInt(request.params.articleId);
+
+  if (typeof token !== 'undefined') {
+    try {
+      const decoded = auth.verify(token);
+      await UserService.findUserById(decoded.userId);
+
+      await model.updateArticle({
+        id: articleId,
+        title: body.title,
+        content: body.content,
+        videoId: body.video_id,
+        userId: body.user_id
+      });
+      response.send(`update an article ${articleId}`);
+    } catch (error) {
+      response.status(400).send(error.message);
+    }
+  } else {
+    res.status(403).send(error.message);
   }
 };
 
 const removeArticle = async (request, response, next) => {
-  const articleId = request.params.articleId;
-  try {
-    await model.deleteArticle(articleId);
-    response.send(`remove a article ${articleId}`);
-  } catch (err) {
-    response.send(err);
+  if (!request.headers.authorization) {
+    return response.status(403).json({ error: 'No credentials sent!' });
+  }
+
+  const token = request.headers.authorization.split(' ')[1];
+
+  const articleId = parseInt(request.params.articleId);
+
+  if (typeof token !== 'undefined') {
+    try {
+      const decoded = auth.verify(token);
+      await UserService.findUserById(decoded.userId);
+
+      await model.deleteArticle(articleId);
+      response.send(`remove an article ${articleId}`);
+    } catch (error) {
+      response.status(400).send(error.message);
+    }
+  } else {
+    res.status(403).send(error.message);
   }
 };
 
