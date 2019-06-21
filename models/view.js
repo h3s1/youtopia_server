@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     {
-      tableName: 'view',
+      tableName: 'views',
       freezeTableName: true,
       charset: 'utf8mb4',
       collate: 'utf8mb4_general_ci'

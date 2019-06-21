@@ -1,30 +1,24 @@
-const { Op, fn, col } = require('sequelize');
-const { Article, Like, View } = require('../models');
+const { Article, Like, View, sequelize } = require('../models');
 
-exports.getarticleList = async (category, lastarticleId) => {
+exports.getarticleList = async (category, pageNumber) => {
+  const CONTENTS_PER_PAGE = 10;
+  const OFFSET = pageNumber * CONTENTS_PER_PAGE;
+  const QUERY = orderBy => `SELECT join2. *,
+  COUNT ( views.article_id ) AS view_count 
+  FROM ( SELECT join1. *,
+      COUNT ( comment.article_id ) AS comment_count 
+  FROM ( SELECT articles. *,
+      COUNT ( likes.article_id ) AS like_count 
+  FROM articles 
+  INNER JOIN likes ON articles.id = likes.article_id GROUP BY articles.id ) AS join1 
+  INNER JOIN comment ON join1.id = comment.article_id GROUP BY join1.id ) AS join2 
+  INNER JOIN views ON join2.id = views.article_id GROUP BY join2.id 
+  ORDER BY ${orderBy} DESC LIMIT ${CONTENTS_PER_PAGE} OFFSET ${OFFSET}`;
+
   if (category === 'new') {
-    try {
-      const nextArticle = await Article.findOne({
-        where: {
-          // eslint-disable-next-line
-          id: {
-            [Op.gt]: lastarticleId || 0
-          }
-        }
-      });
-      console.log(nextArticle.id);
-      return await Article.findAll({
-        where: {
-          id: {
-            [Op.gte]: nextArticle.id
-          }
-        },
-        limit: 6
-      });
-    } catch (error) {
-      throw error;
-    }
+    return await sequelize.query(QUERY('createdAt'));
   } else if (category === 'hot') {
+    return await sequelize.query(QUERY('like_count'));
   } else {
     throw new Error('Unexpected category name.');
   }

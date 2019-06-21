@@ -7,11 +7,10 @@ const errors = require('../utils/errors');
 
 const getArticleList = async (request, response, next) => {
   const category = request.query['category'];
-  const lastarticleId = parseInt(request.query['last-article-id']) || undefined;
+  const pageNumber = parseInt(request.query['page-number']) || 0;
   try {
-    const articleList = await model.getarticleList(category, lastarticleId);
-    response.setHeader('Content-Type', 'application/json');
-    response.send(JSON.stringify(articleList));
+    const articleList = await model.getarticleList(category, pageNumber);
+    response.json(articleList);
   } catch (error) {
     response.send(error);
   }
@@ -23,8 +22,6 @@ const createArticle = async (request, response, next) => {
   }
 
   const token = request.headers.authorization.split(' ')[1];
-
-  const articleId = parseInt(request.params.articleId);
 
   if (typeof token !== 'undefined') {
     try {

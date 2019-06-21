@@ -199,7 +199,7 @@ module.exports = {
         }
       }
     }
-    return await queryInterface.bulkInsert('like', likeList, {
+    return await queryInterface.bulkInsert('likes', likeList, {
       returning: true
     });
   },
