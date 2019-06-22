@@ -79,8 +79,17 @@ exports.getArticle = async (articleId, userId) => {
       article_id: articleId
     }
   });
+  const query = `SELECT tags.content FROM article_links_tag AS link 
+                  INNER JOIN tags ON link.tag_id = tags.id 
+                  WHERE article_id = ${articleId}`;
+  const tagList = await sequelize.query(query);
 
-  return { ...article.dataValues, likes: likeCnt, views: viewCnt };
+  return {
+    ...article.dataValues,
+    likes: likeCnt,
+    views: viewCnt,
+    tags: tagList[0]
+  };
 };
 
 exports.updateArticle = async article => {
