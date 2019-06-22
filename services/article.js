@@ -46,8 +46,6 @@ exports.createArticle = async article => {
         content: tag
       }
     });
-    console.log(createdArticle.id);
-    console.log(createdTag[0].id);
     await ArticleLinksTag.findOrCreate({
       where: {
         // eslint-disable-next-line
