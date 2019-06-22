@@ -1,5 +1,21 @@
 const { Comment } = require('../models');
 
+exports.getCommentList = async (articleId, pageNumber) => {
+  const COMMENT_PER_PAGE = 10;
+  try {
+    return Comment.findAll({
+      where: {
+        // eslint-disable-next-line
+        article_id: articleId
+      },
+      order: [['createdAt', 'DESC'], ['id', 'DESC']],
+      offset: pageNumber * COMMENT_PER_PAGE,
+      limit: COMMENT_PER_PAGE
+    });
+  } catch (error) {
+    throw error;
+  }
+};
 exports.createComment = async comment => {
   try {
     await Comment.create({
