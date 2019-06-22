@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true
       },
       content: {
-        type: Sequelize.STRING(2083),
+        type: Sequelize.STRING(500),
         allowNull: false
       }
     },
@@ -18,7 +18,13 @@ module.exports = (sequelize, DataTypes) => {
       tableName: 'tags',
       freezeTableName: true,
       charset: 'utf8mb4',
-      collate: 'utf8mb4_general_ci'
+      collate: 'utf8mb4_general_ci',
+      indexes: [
+        {
+          unique: true,
+          fields: ['content']
+        }
+      ]
     }
   );
   tag.associate = models => {

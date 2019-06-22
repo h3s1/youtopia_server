@@ -52,7 +52,7 @@ module.exports = {
     const articleList = [...Array(100).keys()].map(num => {
       return {
         // eslint-disable-next-line
-        author_id: `test${num % 7}`,
+        author_id: users[num % 10].user_id,
         title: `${num}번 게시물 제목입니다👍`,
         content:
           '내가 그냥 두고두고 보려고 만든 영상입니다😊\n개행문자 테스트 입니다\n\n개행문자 두개를 넣었습니다\n이모지도 넣어봅니다👀📖❓🍒✏',
@@ -173,7 +173,7 @@ module.exports = {
         }
       }
     }
-    await queryInterface.bulkInsert('view', viewList, {
+    await queryInterface.bulkInsert('views', viewList, {
       returning: true
     });
     console.log('views inserted!');
@@ -199,7 +199,7 @@ module.exports = {
         }
       }
     }
-    return await queryInterface.bulkInsert('like', likeList, {
+    return await queryInterface.bulkInsert('likes', likeList, {
       returning: true
     });
   },

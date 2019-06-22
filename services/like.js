@@ -15,7 +15,7 @@ exports.createLike = async (articleId, userId) => {
 
 exports.removeLike = async (articleId, userId) => {
   try {
-    await Like.destroy({
+    return await Like.destroy({
       where: {
         // eslint-disable-next-line
         article_id: articleId,

@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     {
-      tableName: 'like',
+      tableName: 'likes',
       freezeTableName: true,
       charset: 'utf8mb4',
       collate: 'utf8mb4_general_ci',

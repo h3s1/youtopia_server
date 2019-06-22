@@ -24,7 +24,13 @@ module.exports = (sequelize, DataTypes) => {
       tableName: 'article_links_tag',
       freezeTableName: true,
       charset: 'utf8mb4',
-      collate: 'utf8mb4_general_ci'
+      collate: 'utf8mb4_general_ci',
+      indexes: [
+        {
+          unique: true,
+          fields: ['article_id', 'tag_id']
+        }
+      ]
     }
   );
   articleLinksTag.associate = models => {
