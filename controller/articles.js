@@ -33,7 +33,8 @@ const createArticle = async (request, response, next) => {
         userId: user.user_id,
         title: body.title,
         content: body.content,
-        videoId: body.video_id
+        videoId: body.video_id,
+        tags: body.tags
       });
       response.send('article Uploaded');
     } catch (error) {

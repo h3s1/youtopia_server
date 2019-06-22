@@ -1,4 +1,11 @@
-const { Article, Like, View, sequelize } = require('../models');
+const {
+  Article,
+  ArticleLinksTag,
+  Like,
+  Tag,
+  View,
+  sequelize
+} = require('../models');
 
 exports.getarticleList = async (category, pageNumber) => {
   const CONTENTS_PER_PAGE = 10;
@@ -25,7 +32,7 @@ exports.getarticleList = async (category, pageNumber) => {
 };
 
 exports.createArticle = async article => {
-  Article.create({
+  const createdArticle = await Article.create({
     title: article.title,
     content: article.content,
     // eslint-disable-next-line
@@ -33,6 +40,19 @@ exports.createArticle = async article => {
     // eslint-disable-next-line
     author_id: article.userId
   });
+  for (let tag of article.tags) {
+    const createdTag = await Tag.findOrCreate({
+      where: {
+        content: tag
+      }
+    });
+    await ArticleLinksTag.create({
+      // eslint-disable-next-line
+      article_id: createdArticle.id,
+      // eslint-disable-next-line
+      tag_id: createdTag[0].id
+    });
+  }
 };
 
 exports.getArticle = async (articleId, userId) => {
