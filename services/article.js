@@ -1,3 +1,4 @@
+
 const {
   Article,
   ArticleLinksTag,
@@ -7,20 +8,16 @@ const {
   sequelize
 } = require('../models');
 
-exports.getArticleList = async (category, pageNumber) => {
+exports.getarticleList = async (category, pageNumber) => {
   const CONTENTS_PER_PAGE = 10;
   const OFFSET = pageNumber * CONTENTS_PER_PAGE;
-  const QUERY = orderBy => `SELECT join2. *,
-  COUNT ( views.article_id ) AS view_count 
-  FROM ( SELECT join1. *,
+  const QUERY = orderBy => `SELECT join1. *,
       COUNT ( comment.article_id ) AS comment_count 
-  FROM ( SELECT articles.id, articles.title, articles.video_id, 
-                articles.author_id, articles.createdAt, articles.updatedAt, 
+  FROM ( SELECT articles. *,
       COUNT ( likes.article_id ) AS like_count 
   FROM articles 
   INNER JOIN likes ON articles.id = likes.article_id GROUP BY articles.id ) AS join1 
-  INNER JOIN comment ON join1.id = comment.article_id GROUP BY join1.id ) AS join2 
-  INNER JOIN views ON join2.id = views.article_id GROUP BY join2.id 
+  INNER JOIN comment ON join1.id = comment.article_id GROUP BY join1.id 
   ORDER BY ${orderBy} DESC LIMIT ${CONTENTS_PER_PAGE} OFFSET ${OFFSET}`;
 
   if (category === 'new') {
@@ -47,8 +44,6 @@ exports.createArticle = async article => {
         content: tag
       }
     });
-    console.log(createdArticle.id);
-    console.log(createdTag[0].id);
     await ArticleLinksTag.findOrCreate({
       where: {
         // eslint-disable-next-line
@@ -62,25 +57,18 @@ exports.createArticle = async article => {
   }
 };
 
-exports.getArticle = async (articleId, userId) => {
+exports.getArticle = async articleId => {
+  await Article.update(
+    // eslint-disable-next-line
+    { view_count: sequelize.literal('view_count + 1') },
+    { where: { id: articleId } }
+  );
   const article = await Article.findOne({
     where: {
       id: articleId
     }
   });
   const likeCnt = await Like.count({
-    where: {
-      // eslint-disable-next-line
-      article_id: articleId
-    }
-  });
-  await View.create({
-    // eslint-disable-next-line
-    author_id: userId,
-    // eslint-disable-next-line
-    article_id: articleId
-  });
-  const viewCnt = await View.count({
     where: {
       // eslint-disable-next-line
       article_id: articleId
@@ -93,8 +81,8 @@ exports.getArticle = async (articleId, userId) => {
 
   return {
     ...article.dataValues,
-    likes: likeCnt,
-    views: viewCnt,
+    // eslint-disable-next-line
+    like_count: likeCnt,
     tags: tagList[0]
   };
 };
@@ -133,6 +121,7 @@ exports.updateArticle = async article => {
     });
   }
 };
+
 
 exports.deleteArticle = async articleId => {
   Article.destroy({ where: { id: articleId } });

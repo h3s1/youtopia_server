@@ -24,6 +24,11 @@ module.exports = (sequelize, DataTypes) => {
       // eslint-disable-next-line
       author_id: {
         type: Sequelize.INTEGER.UNSIGNED
+      },
+      // eslint-disable-next-line
+      view_count: {
+        type: Sequelize.INTEGER.UNSIGNED,
+        defaultValue: 0
       }
     },
     {
@@ -43,17 +48,7 @@ module.exports = (sequelize, DataTypes) => {
       sourceKey: 'id',
       onDelete: 'cascade'
     });
-    article.hasMany(models.View, {
-      foreignKey: 'article_id',
-      sourceKey: 'id',
-      onDelete: 'cascade'
-    });
     article.hasMany(models.Comment, {
-      foreignKey: 'article_id',
-      sourceKey: 'id',
-      onDelete: 'cascade'
-    });
-    article.hasMany(models.View, {
       foreignKey: 'article_id',
       sourceKey: 'id',
       onDelete: 'cascade'

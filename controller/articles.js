@@ -46,26 +46,13 @@ const createArticle = async (request, response, next) => {
 };
 
 const getArticle = async (request, response, next) => {
-  if (!request.headers.authorization) {
-    return response.status(403).json({ error: 'No credentials sent!' });
-  }
-
-  const token = request.headers.authorization.split(' ')[1];
-
   const articleId = parseInt(request.params.articleId);
 
-  if (typeof token !== 'undefined') {
-    try {
-      const decoded = auth.verify(token);
-      const user = await UserService.findUserById(decoded.userId);
-
-      const article = await model.getArticle(articleId, user.user_id);
-      response.json(article);
-    } catch (error) {
-      response.status(400).send(error.message);
-    }
-  } else {
-    res.status(403).send(error.message);
+  try {
+    const article = await model.getArticle(articleId);
+    response.json(article);
+  } catch (error) {
+    response.status(400).send(error.message);
   }
 };
 

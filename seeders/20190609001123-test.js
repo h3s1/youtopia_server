@@ -58,11 +58,11 @@ module.exports = {
           '내가 그냥 두고두고 보려고 만든 영상입니다😊\n개행문자 테스트 입니다\n\n개행문자 두개를 넣었습니다\n이모지도 넣어봅니다👀📖❓🍒✏',
         // eslint-disable-next-line
         video_id: videoIds[num % videoIds.length],
-        createdAt: new Date()
+        createdAt: new Date(2019, 6, 22, 17, parseInt(num / 60), num % 60)
           .toISOString()
           .replace(/T/, ' ')
           .replace(/\..+/, ''),
-        updatedAt: new Date()
+        updatedAt: new Date(2019, 6, 22, 17, parseInt(num / 60), num % 60)
           .toISOString()
           .replace(/T/, ' ')
           .replace(/\..+/, '')
@@ -106,11 +106,11 @@ module.exports = {
             article_id: articles[i].id,
             // eslint-disable-next-line
             tag_id: tags[j].id,
-            createdAt: new Date()
+            createdAt: new Date(2019, 6, 22, 17, parseInt(i / 60), i % 60)
               .toISOString()
               .replace(/T/, ' ')
               .replace(/\..+/, ''),
-            updatedAt: new Date()
+            updatedAt: new Date(2019, 6, 22, 17, parseInt(i / 60), i % 60)
               .toISOString()
               .replace(/T/, ' ')
               .replace(/\..+/, '')
@@ -134,11 +134,11 @@ module.exports = {
             article_id: articles[i].id,
             // eslint-disable-next-line
             author_id: users[j].user_id,
-            createdAt: new Date()
+            createdAt: new Date(2019, 6, 22, 17, parseInt(i / 60), i % 60)
               .toISOString()
               .replace(/T/, ' ')
               .replace(/\..+/, ''),
-            updatedAt: new Date()
+            updatedAt: new Date(2019, 6, 22, 17, parseInt(i / 60), i % 60)
               .toISOString()
               .replace(/T/, ' ')
               .replace(/\..+/, '')
@@ -151,32 +151,6 @@ module.exports = {
     });
     console.log('comments inserted!');
 
-    // add view to article
-    let viewList = [];
-    for (let i = 0; i < articles.length; i++) {
-      for (let j = 0; j < users.length; j++) {
-        if (Math.round(Math.random())) {
-          viewList.push({
-            // eslint-disable-next-line
-            article_id: articles[i].id,
-            // eslint-disable-next-line
-            author_id: users[j].user_id,
-            createdAt: new Date()
-              .toISOString()
-              .replace(/T/, ' ')
-              .replace(/\..+/, ''),
-            updatedAt: new Date()
-              .toISOString()
-              .replace(/T/, ' ')
-              .replace(/\..+/, '')
-          });
-        }
-      }
-    }
-    await queryInterface.bulkInsert('views', viewList, {
-      returning: true
-    });
-    console.log('views inserted!');
     // add like to article
     let likeList = [];
     for (let i = 0; i < articles.length; i++) {
@@ -187,11 +161,11 @@ module.exports = {
             article_id: articles[i].id,
             // eslint-disable-next-line
             author_id: users[j].user_id,
-            createdAt: new Date()
+            createdAt: new Date(2019, 6, 22, 17, parseInt(i / 60), i % 60)
               .toISOString()
               .replace(/T/, ' ')
               .replace(/\..+/, ''),
-            updatedAt: new Date()
+            updatedAt: new Date(2019, 6, 22, 17, parseInt(i / 60), i % 60)
               .toISOString()
               .replace(/T/, ' ')
               .replace(/\..+/, '')
