@@ -9,7 +9,7 @@ const getArticleList = async (request, response, next) => {
   const category = request.query['category'];
   const pageNumber = parseInt(request.query['page-number']) || 0;
   try {
-    const articleList = await model.getarticleList(category, pageNumber);
+    const articleList = await model.getArticleList(category, pageNumber);
     response.json(articleList);
   } catch (error) {
     response.send(error);
