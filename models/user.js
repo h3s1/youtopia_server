@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
         type: Sequelize.STRING,
         allowNull: false
       },
+      salt: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
       // eslint-disable-next-line
       avatar_url: {
         type: Sequelize.STRING(2048),

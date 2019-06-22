@@ -1,11 +1,12 @@
 const { User } = require('../models');
+const { encrypt } = require('../utils/auth');
 
 exports.makeUser = async userInfo => {
   try {
+    const { salt, encrypted } = encrypt(userInfo.password);
     await User.create({
-      // eslint-disable-next-line
-      user_id: userInfo.user_id,
-      password: userInfo.password,
+      password: encrypted,
+      salt: salt,
       // eslint-disable-next-line
       avatar_url: userInfo.avatar_url,
       nickname: userInfo.nickname,
@@ -21,6 +22,17 @@ exports.findUserById = userId => {
     return User.findOne({
       // eslint-disable-next-line
       where: { user_id: userId },
+      returning: true
+    });
+  } catch (error) {
+    throw error;
+  }
+};
+
+exports.findUserByEmail = email => {
+  try {
+    return User.findOne({
+      where: { email },
       returning: true
     });
   } catch (error) {
