@@ -17,8 +17,8 @@ router.use('/articles/:articleId/', (request, response, next) => {
   next();
 });
 router.use('/articles/:articleId/comments/', commentRouter);
-router.use('/articles/:articleId/recommendations/', recommendationRouter);
 router.use('/articles/:articleId/likes/', likeRouter);
+router.use('/recommendations/', recommendationRouter);
 router.use('/users/', userRouter);
 
 module.exports = router;
