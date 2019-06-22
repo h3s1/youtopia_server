@@ -71,7 +71,7 @@ exports.getArticle = async (articleId, userId) => {
     // eslint-disable-next-line
     author_id: userId,
     // eslint-disable-next-line
-    article_id: userId
+    article_id: articleId
   });
   const viewCnt = await View.count({
     where: {
