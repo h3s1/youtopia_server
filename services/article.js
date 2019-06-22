@@ -14,7 +14,7 @@ exports.getarticleList = async (category, pageNumber) => {
   COUNT ( views.article_id ) AS view_count 
   FROM ( SELECT join1. *,
       COUNT ( comment.article_id ) AS comment_count 
-  FROM ( SELECT articles. *,
+  FROM ( SELECT articles.id, articles.title, articles.video_id, articles.author_id, articles.createdAt, articles.updatedAt, 
       COUNT ( likes.article_id ) AS like_count 
   FROM articles 
   INNER JOIN likes ON articles.id = likes.article_id GROUP BY articles.id ) AS join1 
