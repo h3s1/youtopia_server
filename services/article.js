@@ -1,3 +1,4 @@
+
 const {
   Article,
   ArticleLinksTag,
@@ -120,6 +121,7 @@ exports.updateArticle = async article => {
     });
   }
 };
+
 
 exports.deleteArticle = async articleId => {
   Article.destroy({ where: { id: articleId } });

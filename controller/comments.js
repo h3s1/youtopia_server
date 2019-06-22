@@ -4,8 +4,18 @@ const CommentService = require('../services/comment');
 const UserService = require('../services/user');
 const auth = require('../utils/auth');
 
-const getCommentList = (request, response, next) => {
-  response.send('get a list of comments');
+const getCommentList = async (request, response, next) => {
+  const articleId = parseInt(request.articleId);
+  const pageNumber = parseInt(request.query['page-number']) || 0;
+  try {
+    const commentList = await CommentService.getCommentList(
+      articleId,
+      pageNumber
+    );
+    response.json(commentList);
+  } catch (error) {
+    response.send(error);
+  }
 };
 
 const createComment = async (request, response, next) => {
