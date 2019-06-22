@@ -89,7 +89,8 @@ const updateArticle = async (request, response, next) => {
         title: body.title,
         content: body.content,
         videoId: body.video_id,
-        userId: body.user_id
+        userId: body.user_id,
+        tags: body.tags
       });
       response.send(`update an article ${articleId}`);
     } catch (error) {

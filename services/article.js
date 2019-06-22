@@ -46,12 +46,18 @@ exports.createArticle = async article => {
         content: tag
       }
     });
-    await ArticleLinksTag.create({
-      // eslint-disable-next-line
-      article_id: createdArticle.id,
-      // eslint-disable-next-line
-      tag_id: createdTag[0].id
+    console.log(createdArticle.id);
+    console.log(createdTag[0].id);
+    await ArticleLinksTag.findOrCreate({
+      where: {
+        // eslint-disable-next-line
+        article_id: createdArticle.id,
+        // eslint-disable-next-line
+        tag_id: createdTag[0].id
+      }
     });
+    console.log(createdArticle.id);
+    console.log(createdTag[0].id);
   }
 };
 
@@ -93,7 +99,7 @@ exports.getArticle = async (articleId, userId) => {
 };
 
 exports.updateArticle = async article => {
-  Article.update(
+  const updatedArticle = await Article.update(
     {
       title: article.title,
       content: article.content,
@@ -102,8 +108,29 @@ exports.updateArticle = async article => {
       // eslint-disable-next-line
       author_id: article.userId
     },
-    { where: { id: article.id } }
+    { where: { id: article.id }, returning: true }
   );
+  await ArticleLinksTag.destroy({
+    where: {
+      // eslint-disable-next-line
+      article_id: article.id
+    }
+  });
+  for (let tag of article.tags) {
+    const createdTag = await Tag.findOrCreate({
+      where: {
+        content: tag
+      }
+    });
+    await ArticleLinksTag.findOrCreate({
+      where: {
+        // eslint-disable-next-line
+        article_id: article.id,
+        // eslint-disable-next-line
+        tag_id: createdTag[0].id
+      }
+    });
+  }
 };
 
 exports.deleteArticle = async articleId => {
