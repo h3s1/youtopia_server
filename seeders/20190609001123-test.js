@@ -4,16 +4,18 @@ const {
   Comment,
   Like,
   Tag,
-  User,
-  View
+  User
 } = require('../models/index');
+const { encrypt } = require('../utils/auth');
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
+    const { salt, encrypted } = encrypt('1234');
     const userList = [...Array(10).keys()].map(num => {
       return {
         // eslint-disable-next-line
-        password: '1234',
+        password: encrypted,
+        salt: salt,
         email: `test${num}@example.com`,
         nickname: `닉네임${num}`,
         // eslint-disable-next-line
@@ -58,11 +60,11 @@ module.exports = {
           '내가 그냥 두고두고 보려고 만든 영상입니다😊\n개행문자 테스트 입니다\n\n개행문자 두개를 넣었습니다\n이모지도 넣어봅니다👀📖❓🍒✏',
         // eslint-disable-next-line
         video_id: videoIds[num % videoIds.length],
-        createdAt: new Date(2019, 6, 22, 17, parseInt(num / 60), num % 60)
+        createdAt: new Date(2019, 5, 22, 17, parseInt(num / 60), num % 60)
           .toISOString()
           .replace(/T/, ' ')
           .replace(/\..+/, ''),
-        updatedAt: new Date(2019, 6, 22, 17, parseInt(num / 60), num % 60)
+        updatedAt: new Date(2019, 5, 22, 17, parseInt(num / 60), num % 60)
           .toISOString()
           .replace(/T/, ' ')
           .replace(/\..+/, '')
