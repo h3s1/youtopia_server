@@ -4,16 +4,18 @@ const {
   Comment,
   Like,
   Tag,
-  User,
-  View
+  User
 } = require('../models/index');
+const { encrypt } = require('../utils/auth');
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
+    const { salt, encrypted } = encrypt('1234');
     const userList = [...Array(10).keys()].map(num => {
       return {
         // eslint-disable-next-line
-        password: '1234',
+        password: encrypted,
+        salt: salt,
         email: `test${num}@example.com`,
         nickname: `닉네임${num}`,
         // eslint-disable-next-line

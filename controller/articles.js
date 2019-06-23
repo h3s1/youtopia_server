@@ -52,7 +52,7 @@ const getArticle = async (request, response, next) => {
     const article = await model.getArticle(articleId);
     response.json(article);
   } catch (error) {
-    response.status(400).send(error.message);
+    response.status(404).send('Page not found');
   }
 };
 

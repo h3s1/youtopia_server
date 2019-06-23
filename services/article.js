@@ -53,8 +53,6 @@ exports.createArticle = async article => {
         tag_id: createdTag[0].id
       }
     });
-    console.log(createdArticle.id);
-    console.log(createdTag[0].id);
   }
 };
 
