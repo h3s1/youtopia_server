@@ -12,8 +12,8 @@ exports.getArticleList = async (category, pageNumber) => {
   const OFFSET = pageNumber * CONTENTS_PER_PAGE;
   const QUERY = orderBy => `SELECT join1. *,
       COUNT ( comment.article_id ) AS comment_count 
-  FROM ( SELECT articles. *,
-      COUNT ( likes.article_id ) AS like_count 
+  FROM ( SELECT articles.id, articles.title, articles.video_id, articles.author_id, 
+    articles.createdAt, articles.updatedAt, articles.view_count, COUNT ( likes.article_id ) AS like_count 
   FROM articles 
   INNER JOIN likes ON articles.id = likes.article_id GROUP BY articles.id ) AS join1 
   INNER JOIN comment ON join1.id = comment.article_id GROUP BY join1.id 
