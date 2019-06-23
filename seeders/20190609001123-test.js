@@ -108,11 +108,11 @@ module.exports = {
             article_id: articles[i].id,
             // eslint-disable-next-line
             tag_id: tags[j].id,
-            createdAt: new Date(2019, 6, 22, 17, parseInt(i / 60), i % 60)
+            createdAt: new Date(2019, 5, 22, 17, parseInt(i / 60), i % 60)
               .toISOString()
               .replace(/T/, ' ')
               .replace(/\..+/, ''),
-            updatedAt: new Date(2019, 6, 22, 17, parseInt(i / 60), i % 60)
+            updatedAt: new Date(2019, 5, 22, 17, parseInt(i / 60), i % 60)
               .toISOString()
               .replace(/T/, ' ')
               .replace(/\..+/, '')
@@ -136,11 +136,11 @@ module.exports = {
             article_id: articles[i].id,
             // eslint-disable-next-line
             author_id: users[j].user_id,
-            createdAt: new Date(2019, 6, 22, 17, parseInt(i / 60), i % 60)
+            createdAt: new Date(2019, 5, 22, 17, parseInt(i / 60), i % 60)
               .toISOString()
               .replace(/T/, ' ')
               .replace(/\..+/, ''),
-            updatedAt: new Date(2019, 6, 22, 17, parseInt(i / 60), i % 60)
+            updatedAt: new Date(2019, 5, 22, 17, parseInt(i / 60), i % 60)
               .toISOString()
               .replace(/T/, ' ')
               .replace(/\..+/, '')
@@ -163,11 +163,11 @@ module.exports = {
             article_id: articles[i].id,
             // eslint-disable-next-line
             author_id: users[j].user_id,
-            createdAt: new Date(2019, 6, 22, 17, parseInt(i / 60), i % 60)
+            createdAt: new Date(2019, 5, 22, 17, parseInt(i / 60), i % 60)
               .toISOString()
               .replace(/T/, ' ')
               .replace(/\..+/, ''),
-            updatedAt: new Date(2019, 6, 22, 17, parseInt(i / 60), i % 60)
+            updatedAt: new Date(2019, 5, 22, 17, parseInt(i / 60), i % 60)
               .toISOString()
               .replace(/T/, ' ')
               .replace(/\..+/, '')
