@@ -12,7 +12,7 @@ const getArticleList = async (request, response, next) => {
     const articleList = await model.getArticleList(category, pageNumber);
     response.json(articleList);
   } catch (error) {
-    response.send(error);
+    response.status(400).send(error.message);
   }
 };
 

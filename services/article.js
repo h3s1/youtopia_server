@@ -1,4 +1,3 @@
-
 const {
   Article,
   ArticleLinksTag,
@@ -8,7 +7,7 @@ const {
   sequelize
 } = require('../models');
 
-exports.getarticleList = async (category, pageNumber) => {
+exports.getArticleList = async (category, pageNumber) => {
   const CONTENTS_PER_PAGE = 10;
   const OFFSET = pageNumber * CONTENTS_PER_PAGE;
   const QUERY = orderBy => `SELECT join1. *,
@@ -21,9 +20,11 @@ exports.getarticleList = async (category, pageNumber) => {
   ORDER BY ${orderBy} DESC LIMIT ${CONTENTS_PER_PAGE} OFFSET ${OFFSET}`;
 
   if (category === 'new') {
-    return await sequelize.query(QUERY('createdAt'));
+    const result = await sequelize.query(QUERY('createdAt'));
+    return result[0];
   } else if (category === 'hot') {
-    return await sequelize.query(QUERY('like_count'));
+    const result = await sequelize.query(QUERY('like_count'));
+    return result[0];
   } else {
     throw new Error('Unexpected category name.');
   }
@@ -121,7 +122,6 @@ exports.updateArticle = async article => {
     });
   }
 };
-
 
 exports.deleteArticle = async articleId => {
   Article.destroy({ where: { id: articleId } });
