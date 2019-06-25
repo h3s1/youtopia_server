@@ -4,7 +4,7 @@ const ArticleService = require('../services/article');
 
 const getRecommendationList = async (request, response, next) => {
   try {
-    const articleList = await ArticleService.getarticleList('hot', 0);
+    const articleList = await ArticleService.getArticleList('hot', 0);
     response.json(articleList);
   } catch (error) {
     response.send(error);
