@@ -1,5 +1,5 @@
 exports.config = {
-  SERVER_CONFIG_ORIGIN: process.env.SERVER_CONFIG_METHOD,
+  SERVER_CONFIG_ORIGIN: process.env.SERVER_CONFIG_ORIGIN,
   SERVER_CONFIG_METHOD: process.env.SERVER_CONFIG_METHOD.split(','),
   SERVER_PORT: parseInt(process.env.PORT),
   DEV_DB_HOST: process.env.DEV_DB_HOST,
