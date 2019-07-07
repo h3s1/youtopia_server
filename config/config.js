@@ -4,7 +4,7 @@ module.exports = {
     password: process.env.DEVELOPMENT_PASSWORD,
     database: process.env.DEVELOPMENT_DATABASE,
     host: process.env.DEVELOPMENT_HOST,
-    port: process.env.DEVELOPMENT_PORT,
+    port: parseInt(process.env.DEVELOPMENT_PORT),
     dialect: process.env.DEVELOPMENT_DIALECT,
     define: {
       charset: 'utf8mb4',
