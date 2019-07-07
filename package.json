@@ -4,7 +4,8 @@
   "description": "Youtopia community server",
   "main": "server.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=development node ./server.js"
+    "start": "node ./server.js",
+    "dev-mac": "export $(cat .env | xargs) && node ./server.js"
   },
   "repository": {
     "type": "git",
