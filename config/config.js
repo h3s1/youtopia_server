@@ -1,11 +1,11 @@
 module.exports = {
   development: {
-    username: process.env.DEVELOPETMENT_USERNAME,
-    password: process.env.DEVELOPETMENT_PASSWORD,
-    database: process.env.DEVELOPETMENT_DATABASE,
-    host: process.env.DEVELOPETMENT_HOST,
-    port: process.env.DEVELOPETMENT_PORT,
-    dialect: process.env.DEVELOPETMENT_DIALECT,
+    username: process.env.DEVELOPMENT_USERNAME,
+    password: process.env.DEVELOPMENT_PASSWORD,
+    database: process.env.DEVELOPMENT_DATABASE,
+    host: process.env.DEVELOPMENT_HOST,
+    port: process.env.DEVELOPMENT_PORT,
+    dialect: process.env.DEVELOPMENT_DIALECT,
     define: {
       charset: 'utf8mb4',
       // eslint-disable-next-line
@@ -13,7 +13,7 @@ module.exports = {
       timestamps: true
     },
     // eslint-disable-next-line
-    jwt_secret: process.env.DEVELOPETMENT_JWT_SECRET
+    jwt_secret: process.env.DEVELOPMENT_JWT_SECRET
   },
   test: {
     username: process.env.TEST_USERNAME,
