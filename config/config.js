@@ -7,9 +7,9 @@ module.exports = {
     port: process.env.DEVELOPETMENT_PORT,
     dialect: process.env.DEVELOPETMENT_DIALECT,
     define: {
-      charset: utf8mb4,
+      charset: 'utf8mb4',
       // eslint-disable-next-line
-      collate: utf8mb4_general_ci,
+      collate: 'utf8mb4_general_ci',
       timestamps: true
     },
     // eslint-disable-next-line
@@ -23,9 +23,9 @@ module.exports = {
     port: process.env.TEST_PORT,
     dialect: process.env.TEST_DIALECT,
     define: {
-      charset: utf8mb4,
+      charset: 'utf8mb4',
       // eslint-disable-next-line
-      collate: utf8mb4_general_ci,
+      collate: 'utf8mb4_general_ci',
       timestamps: true
     },
     // eslint-disable-next-line
@@ -39,9 +39,9 @@ module.exports = {
     port: process.env.PRODUCTION_PORT,
     dialect: process.env.PRODUCTION_DIALECT,
     define: {
-      charset: utf8mb4,
+      charset: 'utf8mb4',
       // eslint-disable-next-line
-      collate: utf8mb4_general_ci,
+      collate: 'utf8mb4_general_ci',
       timestamps: true
     },
     // eslint-disable-next-line
