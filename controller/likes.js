@@ -16,7 +16,7 @@ const createLike = async (request, response, next) => {
       const decoded = auth.verify(token);
       const user = await UserService.findUserById(decoded.userId);
 
-      await LikeService.createLike(request.articleId, user.user_id);
+      await LikeService.createLike(request.articleId, user.id);
       response.send('liked');
     } catch (error) {
       response.status(400).send(error.message);
@@ -38,7 +38,7 @@ const removeLike = async (request, response, next) => {
       const decoded = auth.verify(token);
       const user = await UserService.findUserById(decoded.userId);
 
-      await LikeService.removeLike(request.articleId, user.user_id);
+      await LikeService.removeLike(request.articleId, user.id);
       response.send('liked canceled');
     } catch (error) {
       response.status(400).send(error.message);

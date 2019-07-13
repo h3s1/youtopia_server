@@ -35,7 +35,7 @@ const createComment = async (request, response, next) => {
       await CommentService.createComment({
         content: body.content,
         articleId: request.articleId,
-        userId: user.user_id
+        userId: user.userId
       });
       response.send('comment Uploaded');
     } catch (error) {

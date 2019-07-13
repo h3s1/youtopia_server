@@ -1,26 +1,22 @@
 const { Like } = require('../models');
 
-exports.createLike = async (articleId, userId) => {
+exports.createLike = async (articleID, uid) => {
   try {
     await Like.create({
-      // eslint-disable-next-line
-      article_id: articleId,
-      // eslint-disable-next-line
-      author_id: userId
+      articleId: articleID,
+      userId: uid
     });
   } catch (error) {
     throw error;
   }
 };
 
-exports.removeLike = async (articleId, userId) => {
+exports.removeLike = async (articleID, uid) => {
   try {
     return await Like.destroy({
       where: {
-        // eslint-disable-next-line
-        article_id: articleId,
-        // eslint-disable-next-line
-        author_id: userId
+        articleId: articleID,
+        userId: uid
       },
       returning: true
     });

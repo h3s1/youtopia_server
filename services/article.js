@@ -1,43 +1,101 @@
 const {
   Article,
   ArticleLinksTag,
+  Comment,
   Like,
   Tag,
-  View,
+  User,
   sequelize
 } = require('../models');
 
 exports.getArticleList = async (category, pageNumber) => {
   const CONTENTS_PER_PAGE = 10;
   const OFFSET = pageNumber * CONTENTS_PER_PAGE;
-  const QUERY = orderBy => `SELECT join1. *,
-      COUNT ( comment.article_id ) AS comment_count 
-  FROM ( SELECT articles.id, articles.title, articles.video_id, articles.author_id, 
-    articles.createdAt, articles.updatedAt, articles.view_count, COUNT ( likes.article_id ) AS like_count 
-  FROM articles 
-  INNER JOIN likes ON articles.id = likes.article_id GROUP BY articles.id ) AS join1 
-  INNER JOIN comment ON join1.id = comment.article_id GROUP BY join1.id 
-  ORDER BY ${orderBy} DESC LIMIT ${CONTENTS_PER_PAGE} OFFSET ${OFFSET}`;
 
+  const QUERY = orderBy => `SELECT join2.*, user.id, user.nickname, user.email, user.avatarURL
+                            FROM (SELECT join1. *,
+                            COUNT( comment.articleId ) AS commentCount 
+                            FROM ( SELECT article.id,
+                            article.title,
+                            article.videoId,
+                            article.userId,
+                            article.createdAt,
+                            article.updatedAt,
+                            article.viewCount,
+                            COUNT( likes.articleId ) AS likeCount 
+                            FROM article 
+                            INNER JOIN likes ON article.id = likes.articleId GROUP BY article.id ) AS join1 
+                            INNER JOIN comment ON join1.id = comment.articleId GROUP BY join1.id 
+                            ORDER BY ${orderBy} DESC LIMIT ${CONTENTS_PER_PAGE} OFFSET ${OFFSET}) AS join2
+                            INNER JOIN user ON join2.userId = user.id`;
   if (category === 'new') {
-    const result = await sequelize.query(QUERY('createdAt'));
+    const result = await sequelize.query(QUERY('createdAt'), {
+      include: [
+        { model: User, attributes: ['id', 'nickname', 'email', 'avatarURL'] }
+      ]
+    });
     return result[0];
   } else if (category === 'hot') {
-    const result = await sequelize.query(QUERY('like_count'));
+    const result = await sequelize.query(QUERY('likeCount'));
     return result[0];
   } else {
     throw new Error('Unexpected category name.');
   }
 };
 
+exports.getArticle = async articleId => {
+  await Article.update(
+    { viewCount: sequelize.literal('viewCount + 1') },
+    { where: { id: articleId } }
+  );
+  const article = await Article.findOne({
+    attributes: {
+      exclude: ['userId']
+    },
+    where: {
+      id: articleId
+    },
+    include: {
+      model: User,
+      attributes: ['id', 'nickname', 'email', 'avatarURL']
+    }
+  });
+  const likeCnt = await Like.count({
+    where: {
+      articleId: articleId
+    }
+  });
+  const query = async id => {
+    return await Tag.findAll({
+      attributes: {
+        exclude: ['articleLinksTags']
+      },
+      include: [
+        {
+          model: ArticleLinksTag,
+          attributes: [],
+          where: {
+            articleId: id
+          }
+        }
+      ]
+    });
+  };
+  const tags = await query(articleId);
+
+  return {
+    ...article.dataValues,
+    likeCount: likeCnt,
+    tags: tags
+  };
+};
+
 exports.createArticle = async article => {
   const createdArticle = await Article.create({
     title: article.title,
     content: article.content,
-    // eslint-disable-next-line
-    video_id: article.videoId,
-    // eslint-disable-next-line
-    author_id: article.userId
+    videoId: article.videoId,
+    userId: article.userId
   });
   for (let tag of article.tags) {
     const createdTag = await Tag.findOrCreate({
@@ -47,61 +105,25 @@ exports.createArticle = async article => {
     });
     await ArticleLinksTag.findOrCreate({
       where: {
-        // eslint-disable-next-line
-        article_id: createdArticle.id,
-        // eslint-disable-next-line
-        tag_id: createdTag[0].id
+        articleId: createdArticle.id,
+        tagId: createdTag[0].id
       }
     });
   }
 };
-
-exports.getArticle = async articleId => {
-  await Article.update(
-    // eslint-disable-next-line
-    { view_count: sequelize.literal('view_count + 1') },
-    { where: { id: articleId } }
-  );
-  const article = await Article.findOne({
-    where: {
-      id: articleId
-    }
-  });
-  const likeCnt = await Like.count({
-    where: {
-      // eslint-disable-next-line
-      article_id: articleId
-    }
-  });
-  const query = `SELECT tags.content FROM article_links_tag AS link 
-                  INNER JOIN tags ON link.tag_id = tags.id 
-                  WHERE article_id = ${articleId}`;
-  const tagList = await sequelize.query(query);
-
-  return {
-    ...article.dataValues,
-    // eslint-disable-next-line
-    like_count: likeCnt,
-    tags: tagList[0]
-  };
-};
-
 exports.updateArticle = async article => {
   const updatedArticle = await Article.update(
     {
       title: article.title,
       content: article.content,
-      // eslint-disable-next-line
-      video_id: article.video_id,
-      // eslint-disable-next-line
-      author_id: article.userId
+      videoId: article.videoId,
+      userId: article.userId
     },
     { where: { id: article.id }, returning: true }
   );
   await ArticleLinksTag.destroy({
     where: {
-      // eslint-disable-next-line
-      article_id: article.id
+      articleId: article.id
     }
   });
   for (let tag of article.tags) {
@@ -112,10 +134,8 @@ exports.updateArticle = async article => {
     });
     await ArticleLinksTag.findOrCreate({
       where: {
-        // eslint-disable-next-line
-        article_id: article.id,
-        // eslint-disable-next-line
-        tag_id: createdTag[0].id
+        articleId: article.id,
+        tagId: createdTag[0].id
       }
     });
   }

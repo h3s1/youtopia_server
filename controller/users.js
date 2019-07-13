@@ -32,7 +32,7 @@ const signIn = async (request, response, next) => {
     });
     console.log(matches);
     if (matches) {
-      const jwt = await makeJwt(userInfo.user_id);
+      const jwt = await makeJwt(userInfo.id);
       response.json(jwt);
     } else {
       response.send('failed to sign in');

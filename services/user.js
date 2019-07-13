@@ -7,8 +7,7 @@ exports.makeUser = async userInfo => {
     await User.create({
       password: encrypted,
       salt: salt,
-      // eslint-disable-next-line
-      avatar_url: userInfo.avatar_url,
+      avatarURL: userInfo.avatarURL,
       nickname: userInfo.nickname,
       email: userInfo.email
     });
@@ -20,8 +19,7 @@ exports.makeUser = async userInfo => {
 exports.findUserById = userId => {
   try {
     return User.findOne({
-      // eslint-disable-next-line
-      where: { user_id: userId },
+      where: { id: userId },
       returning: true
     });
   } catch (error) {
