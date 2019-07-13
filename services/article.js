@@ -12,44 +12,6 @@ exports.getArticleList = async (category, pageNumber) => {
   const CONTENTS_PER_PAGE = 10;
   const OFFSET = pageNumber * CONTENTS_PER_PAGE;
 
-  // const QUERY = async orderBy => {
-  //   return await Article.findAll({
-  //     attributes: [
-  //       'id',
-  //       'title',
-  //       'videoId',
-  //       'viewCount',
-  //       'createdAt',
-  //       'updatedAt',
-  //       // eslint-disable-next-line
-  //       [
-  //         sequelize.fn('COUNT', sequelize.col(`comment.commentId`)),
-  //         'commentCount'
-  //       ]
-  //     ],
-  //     include: [
-  //       {
-  //         model: Comment,
-  //         attributes: [['id', 'commentId']]
-  //       },
-  //       {
-  //         model: User,
-  //         attributes: [
-  //           'id',
-  //           'avatarURL',
-  //           'nickname',
-  //           'email',
-  //           'createdAt',
-  //           'updatedAt'
-  //         ]
-  //       }
-  //     ],
-  //     order: [[orderBy, 'DESC']],
-  //     offset: OFFSET,
-  //     limit: CONTENTS_PER_PAGE
-  //   });
-  // };
-
   const QUERY = orderBy => `SELECT join2.*, user.id, user.nickname, user.email, user.avatarURL
                             FROM (SELECT join1. *,
                             COUNT( comment.articleId ) AS commentCount 
