@@ -19,7 +19,7 @@ module.exports = {
         email: `test${num}@example.com`,
         nickname: `닉네임${num}`,
         // eslint-disable-next-line
-        avatar_url:
+        avatarURL:
           'https://yt3.ggpht.com/-DcTENExoDVk/AAAAAAAAAAI/AAAAAAAAAAA/cqeH0FOyCd0/s200-mo-c-c0xffffffff-rj-k-no/photo.jpg',
         createdAt: new Date()
           .toISOString()
@@ -53,13 +53,11 @@ module.exports = {
     ];
     const articleList = [...Array(100).keys()].map(num => {
       return {
-        // eslint-disable-next-line
-        author_id: users[num % 10].user_id,
+        userId: users[num % 10].id,
         title: `${num}번 게시물 제목입니다👍`,
         content:
           '내가 그냥 두고두고 보려고 만든 영상입니다😊\n개행문자 테스트 입니다\n\n개행문자 두개를 넣었습니다\n이모지도 넣어봅니다👀📖❓🍒✏',
-        // eslint-disable-next-line
-        video_id: videoIds[num % videoIds.length],
+        videoId: videoIds[num % videoIds.length],
         createdAt: new Date(2019, 5, 22, 17, parseInt(num / 60), num % 60)
           .toISOString()
           .replace(/T/, ' ')
@@ -104,10 +102,9 @@ module.exports = {
       for (let j = 0; j < tags.length; j++) {
         if (Math.round(Math.random())) {
           linkList.push({
+            articleId: articles[i].id,
             // eslint-disable-next-line
-            article_id: articles[i].id,
-            // eslint-disable-next-line
-            tag_id: tags[j].id,
+            tagId: tags[j].id,
             createdAt: new Date(2019, 5, 22, 17, parseInt(i / 60), i % 60)
               .toISOString()
               .replace(/T/, ' ')
@@ -120,7 +117,7 @@ module.exports = {
         }
       }
     }
-    await queryInterface.bulkInsert('article_links_tag', linkList, {
+    await queryInterface.bulkInsert('articleLinksTag', linkList, {
       returning: true
     });
     console.log('links inserted!');
@@ -133,9 +130,9 @@ module.exports = {
           commentList.push({
             content: `테스트용 ${j}번 댓글입니다 👍✏🍒❓📖`,
             // eslint-disable-next-line
-            article_id: articles[i].id,
+            articleId: articles[i].id,
             // eslint-disable-next-line
-            author_id: users[j].user_id,
+            userId: users[j].id,
             createdAt: new Date(2019, 5, 22, 17, parseInt(i / 60), i % 60)
               .toISOString()
               .replace(/T/, ' ')
@@ -159,10 +156,8 @@ module.exports = {
       for (let j = 0; j < users.length; j++) {
         if (Math.round(Math.random())) {
           likeList.push({
-            // eslint-disable-next-line
-            article_id: articles[i].id,
-            // eslint-disable-next-line
-            author_id: users[j].user_id,
+            articleId: articles[i].id,
+            userId: users[j].id,
             createdAt: new Date(2019, 5, 22, 17, parseInt(i / 60), i % 60)
               .toISOString()
               .replace(/T/, ' ')
@@ -181,7 +176,7 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    const users = await queryInterface.bulkDelete('users', null, {});
-    return await queryInterface.bulkDelete('articles', null, {});
+    const users = await queryInterface.bulkDelete('user', null, {});
+    return await queryInterface.bulkDelete('article', null, {});
   }
 };

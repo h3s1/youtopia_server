@@ -30,10 +30,10 @@ const createArticle = async (request, response, next) => {
 
       body = request.body;
       await model.createArticle({
-        userId: user.user_id,
+        userId: user.userId,
         title: body.title,
         content: body.content,
-        videoId: body.video_id,
+        videoId: body.videoId,
         tags: body.tags
       });
       response.send('article Uploaded');
@@ -75,8 +75,8 @@ const updateArticle = async (request, response, next) => {
         id: articleId,
         title: body.title,
         content: body.content,
-        videoId: body.video_id,
-        userId: body.user_id,
+        videoId: body.videoId,
+        userId: body.userId,
         tags: body.tags
       });
       response.send(`update an article ${articleId}`);
