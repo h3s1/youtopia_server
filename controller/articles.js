@@ -10,7 +10,26 @@ const getArticleList = async (request, response, next) => {
   const pageNumber = parseInt(request.query['page-number']) || 0;
   try {
     const articleList = await model.getArticleList(category, pageNumber);
-    response.json(articleList);
+    response.json(
+      articleList.map(e => {
+        return {
+          id: e.id,
+          title: e.title,
+          videoId: e.videoId,
+          createdAt: e.createdAt,
+          updatedAt: e.updatedAt,
+          viewCount: e.viewCount,
+          likeCount: e.likeCount,
+          commentCount: e.commentCount,
+          author: {
+            userId: e.userId,
+            nickname: e.nickname,
+            email: e.email,
+            avatarURL: e.avatarURL
+          }
+        };
+      })
+    );
   } catch (error) {
     response.status(400).send(error.message);
   }
