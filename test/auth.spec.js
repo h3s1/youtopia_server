@@ -25,18 +25,27 @@ describe('utils/auth.js test', () => {
 
   describe('jwt functions test', () => {
     const userId = 'youtopia';
-    let token;
-    it('make and verify jwt', async done => {
-      token = await auth.makeJwt(userId);
-      try {
-        auth
-          .verify(token)
-          .should.have.property('userId')
-          .which.is.a.String();
+
+    it('make jwt', done => {
+      auth.makeJwt(userId).then(token => {
+        token.should.be.a.String();
         done();
-      } catch (error) {
-        done(error);
-      }
+      });
+    });
+
+    it('verify jwt', done => {
+      auth.makeJwt(userId).then(token => {
+        try {
+          const decoded = auth.verify(token);
+          decoded.should.have
+            .property('userId')
+            .which.is.a.String()
+            .and.which.equals(userId);
+          done();
+        } catch (error) {
+          done(error);
+        }
+      });
     });
   });
 });
