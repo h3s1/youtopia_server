@@ -1,0 +1,9 @@
+diff a/test/auth.spec.js b/test/auth.spec.js	(rejected hunks)
+@@ -15,2 +15,5 @@ describe('utils/auth.js test', () => {
+-    auth.verifyPassword({password: toBeEncrypted, salt: encryptedPassword.salt, encrypted: encryptedPassword.encrypted});
+-
++    auth.verifyPassword({
++      password: toBeEncrypted,
++      salt: encryptedPassword.salt,
++      encrypted: encryptedPassword.encrypted
++    });

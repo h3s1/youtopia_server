@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node ./server.js",
-    "dev-mac": "export $(cat .env | xargs) && node ./server.js"
+    "dev-mac": "export $(cat .env | xargs) && node ./server.js",
+    "test-mac": "export $(cat .env | xargs) && mocha ./test"
   },
   "repository": {
     "type": "git",
@@ -51,7 +52,9 @@
     "eslint-plugin-prettier": "^3.1.0",
     "husky": "^2.3.0",
     "lint-staged": "^8.1.7",
+    "mocha": "^6.2.0",
     "prettier": "^1.17.1",
-    "pretty-quick": "^1.11.0"
+    "pretty-quick": "^1.11.0",
+    "should": "^13.2.3"
   }
 }
