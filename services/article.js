@@ -12,10 +12,10 @@ exports.getArticleList = async (category, pageNumber) => {
   const CONTENTS_PER_PAGE = 10;
   const OFFSET = pageNumber * CONTENTS_PER_PAGE;
 
-  const QUERY = orderBy => `SELECT join2.*, user.id, user.nickname, user.email, user.avatarURL
+  const QUERY = orderBy => `SELECT join2.*, user.nickname, user.email, user.avatarURL
                             FROM (SELECT join1. *,
                             COUNT( comment.articleId ) AS commentCount 
-                            FROM ( SELECT article.id,
+                            FROM ( SELECT article.id as articleId,
                             article.title,
                             article.videoId,
                             article.userId,
@@ -25,7 +25,7 @@ exports.getArticleList = async (category, pageNumber) => {
                             COUNT( likes.articleId ) AS likeCount 
                             FROM article 
                             INNER JOIN likes ON article.id = likes.articleId GROUP BY article.id ) AS join1 
-                            INNER JOIN comment ON join1.id = comment.articleId GROUP BY join1.id 
+                            INNER JOIN comment ON join1.articleId = comment.articleId GROUP BY join1.articleId 
                             ORDER BY ${orderBy} DESC LIMIT ${CONTENTS_PER_PAGE} OFFSET ${OFFSET}) AS join2
                             INNER JOIN user ON join2.userId = user.id`;
   if (category === 'new') {

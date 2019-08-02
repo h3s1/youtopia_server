@@ -13,7 +13,7 @@ const getArticleList = async (request, response, next) => {
     response.json(
       articleList.map(e => {
         return {
-          id: e.id,
+          id: e.articleId,
           title: e.title,
           videoId: e.videoId,
           createdAt: e.createdAt,
