@@ -4,7 +4,7 @@ const { config } = require('../server-config');
 
 exports.verify = token => {
   const secret = config.JWT_SECRET;
-  return jwt.verify(token, Buffer.from(secret, 'base64'), {
+  return jwt.verify(token, Buffer.from(secret), {
     algorithms: [config.JWT_ALGORITHM]
   });
 };
